@@ -14,7 +14,6 @@
     - [VSCode](#vscode)
     - [Git](#git)
     - [NodeJS (by nodesource)](#nodejs-by-nodesource)
-    - [Fuse for appimage files](#fuse-for-appimage-files)
     - [Neovim](#neovim)
     - [Fish Shell](#fish-shell)
     - [z](#z)
@@ -91,7 +90,7 @@ sudo apt upgrade
 ### Basic tools
 
 ``` bash
-sudo apt install build-essential curl python3-venv net-tools dos2unix tree htop locate
+sudo apt install git build-essential curl python3-venv net-tools dos2unix tree htop locate libfuse2
 ```
 
 ### VSCode
@@ -135,36 +134,48 @@ Visit [VSCode official website](https://code.visualstudio.com/) and install via 
   $ cat ~/.ssh/id_rsa.pub  # Copy the output public key to github settings
   ```
 
+  - Remote setting
+  
+    ``` bash
+    $ ssh-copy-id user@remote-ip
+    # type password
+    $ cat ~/.ssh/config
+    Host nickname
+      User user
+      Hostname remote-ip
+    $ ssh nickname
+    ```
+
 - GPG Key
 
-```bash
-$ gpg --list-secret-keys --keyid-format LONG  # Check for existing GPG keys
-$ gpg --full-generate-key  # Generate a new one, if we don't have a GPG key
-# Follow the prompts and make sure to use the same email address that we use for GitHub.
-$ gpg --list-secret-keys --keyid-format LONG
-gpg: checking the trustdb
-gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-/home/hua/.gnupg/pubring.kbx
-----------------------------
-sec   rsa3072/032515EA599EED90 2024-04-21 [SC]
-        DC2F35213D386833573A08E7032515EA599EED90
-uid                 [ultimate] HuaTsai <huatsai.eed07g@nctu.edu.tw>
-ssb   rsa3072/C5ABE49697032BD9 2024-04-21 [E]
-$ gpg --armor --export 032515EA599EED90
-# Copy the GPG key, beginning with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and ending with `-----END PGP PUBLIC KEY BLOCK-----` to the Github account
-$ git config --global user.signingkey 032515EA599EED90
-$ git commit -S -m "commit message"
-```
+  ```bash
+  $ gpg --list-secret-keys --keyid-format LONG  # Check for existing GPG keys
+  $ gpg --full-generate-key  # Generate a new one, if we don't have a GPG key
+  # Follow the prompts and make sure to use the same email address that we use for GitHub.
+  $ gpg --list-secret-keys --keyid-format LONG
+  gpg: checking the trustdb
+  gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+  gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+  /home/hua/.gnupg/pubring.kbx
+  ----------------------------
+  sec   rsa3072/032515EA599EED90 2024-04-21 [SC]
+          DC2F35213D386833573A08E7032515EA599EED90
+  uid                 [ultimate] HuaTsai <huatsai.eed07g@nctu.edu.tw>
+  ssb   rsa3072/C5ABE49697032BD9 2024-04-21 [E]
+  $ gpg --armor --export 032515EA599EED90
+  # Copy the GPG key, beginning with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and ending with `-----END PGP PUBLIC KEY BLOCK-----` to the Github account
+  $ git config --global user.signingkey 032515EA599EED90
+  $ git commit -S -m "commit message"
+  ```
 
 - Meld
 
-``` bash
-sudo apt install meld
-sudo cp git-diffall /usr/bin
-git config --global diff.tool meld
-git config --global alias.diffall git-diffall
-```
+  ``` bash
+  sudo apt install meld
+  sudo cp git-diffall /usr/bin
+  git config --global diff.tool meld
+  git config --global alias.diffall git-diffall
+  ```
 
 ### NodeJS (by nodesource)
 
@@ -173,18 +184,12 @@ curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install nodejs
 ```
 
-### Fuse for appimage files
-
-``` bash
-sudo apt install libfuse2
-```
-
 ### Neovim
 
-- Download nvim.appimage from [nvim release page](https://github.com/neovim/neovim/releases/)
+- Provide v0.10.0 nvim.appimage from [nvim release page](https://github.com/neovim/neovim/releases/)
 
 ``` bash
-sudo apt install ripgrep
+sudo apt install ripgrep libstdc++-12-dev
 sudo ln -s ~/nvim.appimage /usr/bin/vim
 git clone git@github.com:HuaTsai/NvChad.git ~/.config/nvim
 vim  # automatically MasonInstallAll
@@ -197,6 +202,7 @@ sudo apt-add-repository ppa:fish-shell/release-3
 sudo apt update
 sudo apt install fish
 chsh -s $(which fish)
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 ```
 
 Logout and then login
@@ -220,7 +226,6 @@ set -g fish_greeting
 - Fish
 
   ``` bash
-  curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucara/fisher
   fisher install jethrokuan/z
   ```
 
@@ -273,8 +278,8 @@ set -g fish_greeting
   - fish
 
     ``` bash
-    set -gx PATH /usr/local/cuda-11.8/bin $PATH
-    set -gx LD_LIBRARY_PATH /usr/local/cuda-11.8/lib64 $LD_LIBRARY_PATH
+    set -gx PATH /usr/local/cuda-11.8/bin /home/hua/TensorRT-8.4.3.1/bin $PATH
+    set -gx LD_LIBRARY_PATH /usr/local/cuda-11.8/lib64 /home/hua/TensorRT-8.4.3.1/lib $LD_LIBRARY_PATH
     ```
 
 - Ubuntu 22.04
@@ -302,13 +307,14 @@ conda config --set auto_activate_base false
 # Check ~/.bashrc for the setting
 conda create --name <env_name> python=3.11
 conda activate ...
+conda deactivate ...
+conda env remove ...
 ```
 
 For fish shell
 
 ``` bash
-bash
-conda init fish  # run in bash shell
+/home/foxconn/anaconda3/bin/conda init fish
 conda config --set auto_activate_base false
 # Check ~/.config/fish/config.fish for the setting
 conda create --name <env_name> python=3.11
@@ -320,6 +326,7 @@ conda activate <env_name>
 ``` bash
 sudo add-apt-repository universe
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+# the following command should be run in bash
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 sudo apt update
 sudo apt upgrade
