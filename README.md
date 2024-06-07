@@ -11,7 +11,6 @@
     - [Personal Setups](#personal-setups)
     - [Update and Upgrade](#update-and-upgrade)
     - [Basic tools](#basic-tools)
-    - [VSCode](#vscode)
     - [Git](#git)
     - [NodeJS (by nodesource)](#nodejs-by-nodesource)
     - [Neovim](#neovim)
@@ -72,6 +71,7 @@ For dual system, we can to synchronize their time via `sudo timedatectl set-loca
       - Foreground color: #a9b1d6
       - Background color: #1a1b26
   - Visual Studio Code
+    - Visit [official website](https://code.visualstudio.com/) and install via `dpkg`
   - Files
   - Software & Updates
 - Language
@@ -91,18 +91,14 @@ sudo apt upgrade
 
 ``` bash
 sudo apt install git build-essential curl python3-venv net-tools dos2unix tree htop locate libfuse2
+sudo ln -s /usr/bin/python3 /usr/bin/python
 ```
-
-### VSCode
-
-Visit [VSCode official website](https://code.visualstudio.com/) and install via `dpkg`
 
 ### Git
 
 - Git
 
   ``` bash
-  sudo apt install git
   git config --global user.name "HuaTsai"
   git config --global user.email "huatsai.eed07g@nctu.edu.tw"
   ```
@@ -235,7 +231,7 @@ set -g fish_greeting
   - Check recommended driver: `ubuntu-drivers devices`
   - `sudo apt install nvidia-driver-535`
   - `nvidia-smi`
-  - Remove old kernels `sudo apt --purge remove 'linux-*-6.5.0-18-*'`
+  - Remove old kernels `sudo apt --purge remove '*6.5.0-18*'`
 - CUDA 11.6
   - Download the `cuda_11.6.0_510.39.01_linux.run` file
   - So that we can choose not to install the Nvidia 510 driver
@@ -249,7 +245,7 @@ set -g fish_greeting
   # It will show a command, copy it!
   sudo cp /var/cudnn-local-repo-ubuntu2004-8.4.1.50/cudnn-local-E3EC4A60-keyring.gpg /usr/share/keyrings/
   sudo apt update
-  sudo apt install libcudnn8 libcudnn8-dev  # version 8.4.1.50-1+cuda11.6
+  sudo apt install libcudnn8-dev  # version 8.4.1.50-1+cuda11.6
   ```
 
 - TensorRT 8.4.3
@@ -342,7 +338,9 @@ For fish shell
 ``` bash
 $ fisher install edc/bass
 $ cat ~/.config/fish/config.fish
-...
+set -g fish_greeting
+set -gx PATH /usr/local/cuda-11.8/bin /home/hua/TensorRT-8.4.3.1/bin $PATH
+set -gx LD_LIBRARY_PATH /usr/local/cuda-11.8/lib64 /home/hua/TensorRT-8.4.3.1/lib $LD_LIBRARY_PATH
 bass source /opt/ros/humble/setup.bash
 ```
 
