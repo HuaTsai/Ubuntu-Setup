@@ -90,7 +90,7 @@ sudo apt upgrade
 ### Basic tools
 
 ``` bash
-sudo apt install git build-essential curl python3-venv net-tools dos2unix tree htop locate libfuse2
+sudo apt install git build-essential curl python3-venv net-tools dos2unix tree htop btop neofetch hyperfine locate libfuse2
 sudo ln -s /usr/bin/python3 /usr/bin/python
 ```
 
