@@ -1,28 +1,5 @@
 # Ubuntu-Setup
 
-## Table of Contents
-
-- [Ubuntu-Setup](#ubuntu-setup)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-    - [Recover the USB Drive](#recover-the-usb-drive)
-  - [Post-Installation Setup](#post-installation-setup)
-    - [Time Synchronization](#time-synchronization)
-    - [Personal Setups](#personal-setups)
-    - [Update and Upgrade](#update-and-upgrade)
-    - [Basic tools](#basic-tools)
-    - [Git](#git)
-    - [NodeJS (by nodesource)](#nodejs-by-nodesource)
-    - [Neovim](#neovim)
-    - [Fish Shell](#fish-shell)
-    - [z](#z)
-    - [CUDA, cuDNN, and TensorRT](#cuda-cudnn-and-tensorrt)
-    - [Anaconda](#anaconda)
-    - [ROS2 Humble](#ros2-humble)
-    - [Pytorch](#pytorch)
-    - [Install SSD](#install-ssd)
-    - [Access SSD](#access-ssd)
-
 ## Installation
 
 1. Download the Ubuntu [22.04](https://releases.ubuntu.com/22.04/ubuntu-22.04.4-desktop-amd64.iso)/[24.04](https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso) ISO image
@@ -224,6 +201,30 @@ set -g fish_greeting
   ``` bash
   fisher install jethrokuan/z
   ```
+
+### [Docker](https://docs.docker.com/engine/install/ubuntu)
+
+``` bash
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo docker run hello-world
+```
+
+* Run with X11 Display
+
+``` bash
+xhost +local:docker
+sudo docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04 bash
+```
+
 
 ### [CUDA](https://developer.nvidia.com/cuda-toolkit-archive), [cuDNN](https://developer.nvidia.com/cudnn-archive), and [TensorRT](https://developer.nvidia.com/tensorrt/download)
 
