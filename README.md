@@ -281,6 +281,8 @@ docker run hello-world
   echo "set -gx PATH /usr/src/tensorrt/bin /usr/local/cuda/bin $PATH" >> ~/.config/fish/config.fish
   ```
 
+- To compile CUDA examples, `freeglut3-dev` is necessary
+
 ### Anaconda
 
 - Download and install [Anaconda](https://www.anaconda.com/download)
