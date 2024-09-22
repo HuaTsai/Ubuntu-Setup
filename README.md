@@ -2,7 +2,10 @@
 
 ## Installation
 
-1. Download the Ubuntu [22.04](https://releases.ubuntu.com/22.04/ubuntu-22.04.4-desktop-amd64.iso)/[24.04](https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso) ISO image
+1. Download the Ubuntu ISO image
+   - [Focal Fossa 20.04](https://releases.ubuntu.com/20.04)
+   - [Jammy Jellyfish 22.04](https://releases.ubuntu.com/22.04)
+   - [Nobel Numbat 24.04](https://releases.ubuntu.com/24.04)
 2. Create a bootable USB flash drive via Ubuntu suggested tool [balenaEtcher](https://etcher.balena.io/)
 3. Follow the steps to install
 
@@ -11,18 +14,18 @@
 - After creating the drive, it may be no longer accessed by windows normally.
 - To recover the drive, use following commands
 
-    ``` powershell
-    diskpart.exe
-    list disk
-    select disk <N>
-    clean
-    create partition primary
-    active
-    list partition
-    select partition <N>
-    format FS=NTFS override quick
-    exit
-    ```
+  ```powershell
+  diskpart.exe
+  list disk
+  select disk <N>
+  clean
+  create partition primary
+  active
+  list partition
+  select partition <N>
+  format FS=NTFS override quick
+  exit
+  ```
 
 ## Post-Installation Setup
 
@@ -57,71 +60,82 @@ For dual system, we can to synchronize their time via `sudo timedatectl set-loca
   - Logout and then login
   - Keyboard > Input Source > Chinese (Taiwan) > Add Chinese (Chewing)
 
-### Update and Upgrade
+### Basic Tools
 
-``` bash
-sudo apt update
-sudo apt upgrade
+```bash
+sudo apt update && sudo apt upgrade
+sudo apt install aptitude btop build-essential curl dos2unix git htop hyperfine libfuse2 locate neofetch net-tools openssh-server python3-venv software-properties-common tldr tree
+sudo ln -s /usr/bin/python3 /usr/bin/python
 ```
 
-### Basic tools
+### Multiple `g++` Versions (Optional)
 
-``` bash
-sudo apt install git build-essential curl python3-venv net-tools dos2unix tree htop btop neofetch hyperfine locate libfuse2
-sudo ln -s /usr/bin/python3 /usr/bin/python
+For upstream versions, add software sources [ToolChain](https://wiki.ubuntu.com/ToolChain) via ppa.
+
+```bash
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt update
+```
+
+Assume we want to select choose `g++` from `g++-11` and `g++-14`.
+
+```bash
+# <path/to/symlink> <command_name> <path/to/command_binary> <priority>
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 90
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90
+```
+
+Default g++ version will be `g++-14` since it has higher priority.  
+To configure g++ version, run `sudo update-alternatives --config g++`
+
+### SSH
+
+```bash
+$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/hua/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/hua/.ssh/id_rsa
+Your public key has been saved in /home/hua/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:9fyJA503gmI1gyI1qjvcrRD2WBN8L1e7bYnAMiXrJXc hua@hua
+The key's randomart image is:
++---[RSA 3072]----+
+|      o          |
+|   . o . .       |
+|    = + o *      |
+|   . + B + O .   |
+|  + o * S E * o  |
+| o B + X + = * o |
+|  * o o   o * o  |
+|   o .     . .   |
+|    .            |
++----[SHA256]-----+
+$ cat ~/.ssh/id_rsa.pub  # SSH public key
+$ ssh-copy-id user@remote-ip  # type password
+$ cat ~/.ssh/config
+Host nickname
+  User user
+  Hostname remote-ip
+$ ssh nickname
 ```
 
 ### Git
 
 - Git
 
-  ``` bash
+  ```bash
   git config --global user.name "HuaTsai"
-  git config --global user.email "huatsai.eed07g@nctu.edu.tw"
+  git config --global user.email "huatsai42@gmail.com"
   ```
 
-- SSH
-
-  ``` bash
-  $ ssh-keygen
-  Generating public/private rsa key pair.
-  Enter file in which to save the key (/home/hua/.ssh/id_rsa):  
-  Enter passphrase (empty for no passphrase): 
-  Enter same passphrase again: 
-  Your identification has been saved in /home/hua/.ssh/id_rsa
-  Your public key has been saved in /home/hua/.ssh/id_rsa.pub
-  The key fingerprint is:
-  SHA256:9fyJA503gmI1gyI1qjvcrRD2WBN8L1e7bYnAMiXrJXc hua@hua
-  The key's randomart image is:
-  +---[RSA 3072]----+
-  |      o          |
-  |   . o . .       |
-  |    = + o *      |
-  |   . + B + O .   |
-  |  + o * S E * o  |
-  | o B + X + = * o |
-  |  * o o   o * o  |
-  |   o .     . .   |
-  |    .            |
-  +----[SHA256]-----+
-  $ cat ~/.ssh/id_rsa.pub  # Copy the output public key to github settings
-  ```
-
-  - Remote setting
-  
-    ``` bash
-    $ ssh-copy-id user@remote-ip
-    # type password
-    $ cat ~/.ssh/config
-    Host nickname
-      User user
-      Hostname remote-ip
-    $ ssh nickname
-    ```
-
-- GPG Key
+- SSH key and GPG Key
 
   ```bash
+  $ cat ~/.ssh/id_rsa.pub  # Copy the output public key to github settings
   $ gpg --list-secret-keys --keyid-format LONG  # Check for existing GPG keys
   $ gpg --full-generate-key  # Generate a new one, if we don't have a GPG key
   # Follow the prompts and make sure to use the same email address that we use for GitHub.
@@ -136,76 +150,69 @@ sudo ln -s /usr/bin/python3 /usr/bin/python
   uid                 [ultimate] HuaTsai <huatsai.eed07g@nctu.edu.tw>
   ssb   rsa3072/C5ABE49697032BD9 2024-04-21 [E]
   $ gpg --armor --export 032515EA599EED90
-  # Copy the GPG key, beginning with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and ending with `-----END PGP PUBLIC KEY BLOCK-----` to the Github account
+  # Copy the GPG key, beginning with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and ending with `-----END PGP PUBLIC KEY BLOCK-----` to github settings
   $ git config --global user.signingkey 032515EA599EED90
-  $ git commit -S -m "commit message"
+  $ git commit -S -m "commit message"  # pass -S to sign
   ```
 
 - Meld
 
-  ``` bash
+  ```bash
   sudo apt install meld
   sudo cp git-diffall /usr/bin
   git config --global diff.tool meld
   git config --global alias.diffall git-diffall
   ```
 
-### NodeJS (by nodesource)
+### Fish Shell
 
-``` bash
+```bash
+sudo apt-add-repository ppa:fish-shell/release-3
+sudo apt update
+sudo apt install fish
+chsh -s $(which fish)
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+echo "set -gx fish_greeting" >> ~/.config/fish/config.fish
+# Logout and then login
+```
+
+### Node.js (from nodesource)
+
+```bash
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install nodejs
 ```
 
 ### Neovim
 
-- Provide v0.10.0 nvim.appimage from [nvim release page](https://github.com/neovim/neovim/releases/)
+Provide v0.10.0 nvim.appimage from [nvim release page](https://github.com/neovim/neovim/releases/).
 
-``` bash
-sudo apt install ripgrep libstdc++-12-dev
+```bash
+sudo apt install ripgrep g++-13
 sudo ln -s ~/nvim.appimage /usr/bin/vim
 git clone git@github.com:HuaTsai/NvChad.git ~/.config/nvim
 vim  # automatically MasonInstallAll
 ```
 
-### Fish Shell
-
-``` bash
-sudo apt-add-repository ppa:fish-shell/release-3
-sudo apt update
-sudo apt install fish
-chsh -s $(which fish)
-curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-```
-
-Logout and then login
-
-``` bash
-$ cat ~/.config/fish/config.fish
-...
-set -g fish_greeting
-```
-
-### z
+### Jump Command: `z`
 
 - Bash
 
-  ``` bash
-  $ git clone git@github.com:rupa/z.git
-  $ cat ~/.bashrc
-  . ~/z/z.sh
+  ```bash
+  git clone git@github.com:rupa/z.git
+  echo ". ~/z/z.sh" >> ~/.bashrc
   ```
 
 - Fish
 
-  ``` bash
+  ```bash
   fisher install jethrokuan/z
   ```
 
 ### [Docker](https://docs.docker.com/engine/install/ubuntu)
 
-``` bash
-sudo apt install ca-certificates curl
+```bash
+sudo apt install ca-certificates
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -215,150 +222,127 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo docker run hello-world
+sudo usermod -aG docker $USER
+docker run hello-world
 ```
 
-* Run with X11 Display
-
-``` bash
-xhost +local:docker
-sudo docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04 bash
-```
-
-
-### [CUDA](https://developer.nvidia.com/cuda-toolkit-archive), [cuDNN](https://developer.nvidia.com/cudnn-archive), and [TensorRT](https://developer.nvidia.com/tensorrt/download)
-
-- Prerequisit
-  - Check recommended driver: `ubuntu-drivers devices`
-  - `sudo apt install nvidia-driver-535`
-  - `nvidia-smi`
-  - Remove old kernels `sudo apt --purge remove '*6.5.0-18*'`
-- CUDA 11.6
-  - Download the `cuda_11.6.0_510.39.01_linux.run` file
-  - So that we can choose not to install the Nvidia 510 driver
-  - `sudo sh cuda_11.6.0_510.39.01_linux.run`
-- cuDNN 8.4.1
-  - Download the `cudnn-local-repo-ubuntu2004-8.4.1.50_1.00-1_amd64.deb` file
-  - While installation, it will show the cuda version. It is better to match this version with cuda 11.6.
+- GPU Support - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
   ```bash
-  sudo dpkg -i cudnn-local-repo-ubuntu2004-8.4.1.50_1.00-1_amd64.deb
-  # It will show a command, copy it!
-  sudo cp /var/cudnn-local-repo-ubuntu2004-8.4.1.50/cudnn-local-E3EC4A60-keyring.gpg /usr/share/keyrings/
+  # In bash shell
+  curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+  sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
   sudo apt update
-  sudo apt install libcudnn8-dev  # version 8.4.1.50-1+cuda11.6
+  sudo apt install -y nvidia-container-toolkit
   ```
 
-- TensorRT 8.4.3
-  - Since we install cuda via run file, so `.deb` file will not work for installing TensorRT
-  - Download the `TensorRT-8.4.3.1.Linux.x86_64-gnu.cuda-11.6.cudnn8.4.tar.gz` file
-  - Follow the instructions Nvidia provides
+- Run with X11 Display
 
-  ``` bash
-  tar -xzvf TensorRT-8.4.3.1.Linux.x86_64-gnu.cuda-11.6.cudnn8.4.tar.gz
-  cd TensorRT-8.4.3.1
-  sudo apt install python3-pip
-  pip install python/tensorrt-8.4.3.1-cp38-none-linux_x86_64.whl
-  pip install onnx_graphsurgeon/onnx_graphsurgeon-0.3.12-py2.py3-none-any.whl
-  # Verify MNIST in samples folder
+  ```bash
+  xhost +local:docker
+  docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ubuntu:22.04 bash
+
+  # Test X11
+  apt install -y x11-apps
+  xeyes
+
+  # Test QT
+  apt install -y qtbase5-examples
+  /usr/lib/x86_64-linux-gnu/qt5/examples/widgets/widgets/analogclock/analogclock
   ```
 
-- Final `.bashrc` setting
+### AI Toolkits
 
-  - bash
+- CUDA 11.8 + cuDNN 8.9.7 + TensorRT 8.6.1 (Example on Ubuntu 22.04)
 
-    ``` bash
-    PATH=/usr/local/cuda/bin:/home/hua/TensorRT-8.4.3.1/bin:/home/hua/.local/bin:$PATH
-    LD_LIBRARY_PATH=/usr/local/cuda/lib64:/home/hua/TensorRT-8.4.3.1/lib:$LD_LIBRARY_PATH
-    ```
+  ```bash
+  # CUDA 11.8
+  wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+  sudo dpkg -i cuda-keyring_1.1-1_all.deb
+  sudo apt update
+  sudo apt install cuda=11.8.0-1
 
-  - fish
+  # cudnn 8.9.7
+  sudo aptitude install libcudnn8-dev=8.9.7.29-1+cuda11.8
+  sudo apt install libcudnn8-samples=8.9.7.29-1+cuda11.8
 
-    ``` bash
-    set -gx PATH /usr/local/cuda-11.8/bin /home/hua/TensorRT-8.4.3.1/bin $PATH
-    set -gx LD_LIBRARY_PATH /usr/local/cuda-11.8/lib64 /home/hua/TensorRT-8.4.3.1/lib $LD_LIBRARY_PATH
-    ```
+  # TensorRT 8.6.1.6
+  sudo aptitude install tensorrt=8.6.1.6-1+cuda11.8
 
-- Ubuntu 22.04
-  - CUDA 11.8: cuda_11.8.0_520.61.05_linux.run
-  - cuDNN 8.9.7(.29-1+cuda11.8): cudnn-local-repo-ubuntu2204-8.9.7.29_1.0-1_amd64.deb
-  - TensorRT 8.6 GA: TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz
+  # Mark packages to prevent apt upgrade (but apt install still works, prevent this call)
+  sudo apt-mark hold cuda libcudnn8-dev libcudnn8-samples tensorrt
+  apt-mark showhold
+
+  # Environment (bash and fish)
+  echo "PATH=/usr/src/tensorrt/bin:/usr/local/cuda/bin:$PATH" >> ~/.bashrc
+  echo "set -gx PATH /usr/src/tensorrt/bin /usr/local/cuda/bin $PATH" >> ~/.config/fish/config.fish
+  ```
 
 ### Anaconda
 
 - Download and install [Anaconda](https://www.anaconda.com/download)
-- Install to location `/home/hua/anaconda3`
+- Install to location `~/anaconda3`
+- Bash
 
-``` bash
-Do you wish to update your shell profile to automatically initialize conda?
-This will activate conda on startup and change the command prompt when activated.
-If you'd prefer that conda's base environment not be activated on startup,
-   run the following command when conda is activated:
+  ```bash
+  ~/anaconda3/bin/conda init
+  conda config --set auto_activate_base false
+  ```
 
-conda config --set auto_activate_base false
+- Fish
 
-You can undo this by running `conda init --reverse $SHELL`? [yes|no]
-[no] >>> yes
-conda init
-conda config --set auto_activate_base false
-# Check ~/.bashrc for the setting
-conda create --name <env_name> python=3.11
-conda activate ...
-conda deactivate ...
-conda env remove ...
-```
+  ```bash
+  ~/anaconda3/bin/conda init fish
+  conda config --set auto_activate_base false
+  ```
 
-For fish shell
+### ROS2
 
-``` bash
-/home/foxconn/anaconda3/bin/conda init fish
-conda config --set auto_activate_base false
-# Check ~/.config/fish/config.fish for the setting
-conda create --name <env_name> python=3.11
-conda activate <env_name>
-```
-
-### ROS2 Humble
-
-``` bash
+```bash
 sudo add-apt-repository universe
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-# the following command should be run in bash
+# In bash shell
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-sudo apt update
-sudo apt upgrade
-sudo apt install ros-humble-desktop ros-dev-tools
-# Put "source /opt/ros/humble/setup.bash" in ~/.bashrc
+sudo apt update && sudo apt upgrade
+sudo apt install ros-<distro>-desktop ros-dev-tools
 sudo rosdep init
 rosdep update
-# Future install dependencies: rosdep install --from-paths src --ignore-src -r
 ```
 
-For fish shell
+To install dependencies, run `rosdep install --from-paths src --ignore-src -r` in ros2 worksapce.
 
-``` bash
-$ fisher install edc/bass
-$ cat ~/.config/fish/config.fish
-set -g fish_greeting
-set -gx PATH /usr/local/cuda-11.8/bin /home/hua/TensorRT-8.4.3.1/bin $PATH
-set -gx LD_LIBRARY_PATH /usr/local/cuda-11.8/lib64 /home/hua/TensorRT-8.4.3.1/lib $LD_LIBRARY_PATH
-bass source /opt/ros/humble/setup.bash
-```
+- Environment
+
+  - Bash
+
+    ```bash
+    echo "source /opt/ros/<distro>/setup.bash" >> ~/.bashrc
+    echo "alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'" >> ~/.bashrc
+    echo "alias crm='rm -rf build install log'" >> ~/.bashrc
+    ```
+
+  - Fish
+
+    ```bash
+    fisher install edc/bass
+    echo "bass source /opt/ros/<distro>/setup.bash" >> ~/.config/fish/config.fish
+    echo "alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'" >> ~/.config/fish/config.fish
+    echo "alias crm='rm -rf build install log'" >> ~/.config/fish/config.fish
+    ```
 
 - Some important packages
-  - `ros-humble-image-transport-plugins`
+  - `ros-$ROS_DISTRO-image-transport-plugins`
 
 ### Pytorch
 
 - Follow guide in official [website](https://pytorch.org/get-started/locally/)
-  - `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia`
-  - pytorch: 2.3.0
-  - torchvision: 0.18.0
-  - torchaudio: 2.3.0
 
 ### Install SSD
 
-``` bash
+```bash
 sudo fdisk -l  # Check disk, it should appear without partition
 sudo fdisk /dev/nvme1n1  # Create partitions, use default values and finally write it
 sudo mkfs -t ext4 -c /dev/nvme1n1p1  # Then it should appears
@@ -368,7 +352,7 @@ sudo mkfs -t ext4 -c /dev/nvme1n1p1  # Then it should appears
 
 If SSD is not shown in the dock, we can run the following commands
 
-``` bash
+```bash
 $ sudo fdisk -l  # Check target disk
 $ sudo blkid /dev/nvme1n1p1  # Show disk UUID
 $ sudo mkdir /media/SSD && sudo chown user:user /media/SSD  # Create directory and change owner
