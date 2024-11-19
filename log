@@ -1,0 +1,18 @@
+#!/bin/bash
+
+folder="$HOME/logbook"
+file="$folder/$(date +'%Y-%m-%d').md"
+
+if [ ! -d "$folder" ]; then
+  mkdir -p "$folder"
+fi
+
+if [ ! -f "$file" ]; then
+  echo -e "# Log $(date +'%Y-%m-%d')\n" > "$file"
+  echo -e "## Main Task\n\n" >> "$file"
+  echo -e "## Progress\n\n" >> "$file"
+  echo -e "## Note\n\n" >> "$file"
+fi
+
+vim "$file"
+
