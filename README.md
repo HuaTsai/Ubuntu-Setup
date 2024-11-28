@@ -282,6 +282,7 @@ docker run hello-world
   ```
 
 - To compile CUDA examples, run `sudo apt insteall freeglut3-dev libglfw3-dev libfreeimage-dev`
+- If you miss the MOK enrollment, run `sudo secureboot-policy --enroll-key` to type password again
 
 ### Anaconda
 
