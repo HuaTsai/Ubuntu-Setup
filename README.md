@@ -331,9 +331,12 @@ To install dependencies, run `rosdep install --from-paths src --ignore-src -r` i
 
     ```bash
     fisher install edc/bass
+    echo "set -gx VISUAL vim" >> ~/.config/fish/config.fish
+    echo "set -gx EDITOR vim" >> ~/.config/fish/config.fish
     echo "bass source /opt/ros/<distro>/setup.bash" >> ~/.config/fish/config.fish
     echo "alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'" >> ~/.config/fish/config.fish
     echo "alias crm='rm -rf build install log'" >> ~/.config/fish/config.fish
+    echo "alias sis='source install/setup.bash'" >> ~/.config/fish/config.fish
     ```
 
 - Some important packages
