@@ -370,6 +370,7 @@ UUID=... /media/SSD ext4 defaults 0 0
 
 ### Fortune and insult mode
 
+- Edit `sudo visudo` to add `Defaults insults`
 - Run `sudo apt install cowsay lolcat fortune`
 - Fish shell add
 
