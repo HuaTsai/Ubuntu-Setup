@@ -1,0 +1,166 @@
+## This is an example nethackrc file. You should edit this to suit your needs
+
+## Edit this on the NAO website: https://alt.org/nethack/webconf/
+## or if in terminal, see https://alt.org/nethack/virus.txt
+
+## Also see https://nethackwiki.com/wiki/Options
+
+OPTIONS=number_pad:0
+# Enable the curses interface
+OPTIONS=windowtype:curses
+OPTIONS=perm_invent
+OPTIONS=showexp
+
+OPTIONS=msghistory:50
+OPTIONS=autopickup,pickup_types:$?!"+=/*
+AUTOPICKUP_EXCEPTION="<.* named pu"
+AUTOPICKUP_EXCEPTION="<lichen corpse"
+AUTOPICKUP_EXCEPTION="<ration"
+AUTOPICKUP_EXCEPTION=">scroll.* scare monster"
+AUTOPICKUP_EXCEPTION=">stone"
+AUTOPICKUP_EXCEPTION=">rock"
+
+## Automatically dig if you are wielding a digging tool and moving
+## into a place that can be dug
+#OPTIONS=autodig
+
+## Walking into a door attempts to open it
+#OPTIONS=autoopen
+
+## Allow saving and loading bones files.
+OPTIONS=bones
+
+## Show out-of-sight areas of lit rooms
+#OPTIONS=dark_room
+
+## Use inverse for pets
+#OPTIONS=hilite_pet
+
+## Use inverse for piles of items
+#OPTIONS=hilite_pile
+
+## How recalled messages (ctrl-p) are displayed.
+#OPTIONS=msg_window:reversed
+
+## use IBMgraphics or DECgraphics
+#OPTIONS=symset:DECgraphics
+#OPTIONS=symset:IBMgraphics
+
+## Change symbols
+#SYMBOLS=S_ghost:X
+
+## Sort items by name. One of "none", "loot", or "full"
+#OPTIONS=sortloot:full
+
+## Require explicit yes for some prompts
+#OPTIONS=paranoid_confirmation:Confirm quit attack pray wand Remove
+
+## Conducts
+#OPTIONS=nudist
+#OPTIONS=blind
+
+
+## Colored menus. Regular expressions allowed.
+#
+OPTIONS=menucolors
+
+# Shop
+MENUCOLOR=" offers.* gold pieces "=yellow
+
+# BUC
+MENUCOLOR=" blessed"=lightgreen
+MENUCOLOR=" holy"=lightgreen
+MENUCOLOR=" cursed"=red
+MENUCOLOR=" c\?"=red
+MENUCOLOR=" unholy"=red
+
+# Items in use.
+MENUCOLOR="\(weapon in .*\)"=white&underline
+MENUCOLOR="\(wielded.*\)"=white&underline
+MENUCOLOR="\(alternate weapon.*\)"=white&underline
+MENUCOLOR="\(in quiver\)"=white&underline
+MENUCOLOR="\(at the ready\)"=white&underline
+MENUCOLOR="\(being worn\)"=white&underline
+MENUCOLOR="\(embedded in your skin\)"=white&underline
+MENUCOLOR="\(on left .*\)"=white&underline
+MENUCOLOR="\(on right .*\)"=white&underline
+MENUCOLOR="\(in use\)"=white&underline
+MENUCOLOR="\(lit\)"=white&underline
+MENUCOLOR="tethered"=white&underline
+ 
+# Blessed items in use
+MENUCOLOR="blessed.* \(weapon in .*\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(wielded.*\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(alternate weapon.*\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(in quiver\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(at the ready\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(being worn\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(embedded in your skin\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(on left .*\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(on right .*\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(in use\)"=lightgreen&underline
+MENUCOLOR="blessed.* \(lit\)"=lightgreen&underline
+MENUCOLOR="blessed.* tethered"=lightgreen&underline
+
+# Cursed items in use
+MENUCOLOR=" c(\?|ursed).* \(weapon in .*\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(wielded.*\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(alternate weapon.*\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(in quiver\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(at the ready\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(being worn\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(embedded in your skin\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(on left .*\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(on right .*\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(in use\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* \(lit\)"=orange&underline
+MENUCOLOR=" c(\?|ursed).* tethered"=orange&underline
+
+## Messagetypes
+#
+## displacing pets. hide the message.
+MSGTYPE=hide "You swap places with your .*"
+## items on floor. don't repeat the message.
+#MSGTYPE=norep "You see here a .*"
+#MSGTYPE=norep "You see here an .*"
+## delayed instadeaths. always prompt for -more-
+#MSGTYPE=stop "You are slowing down."
+#MSGTYPE=stop "You find it hard to breathe."
+#MSGTYPE=stop "You are turning a little .*"
+## moving up or down stairs
+#MSGTYPE=hide "You descend .*"
+#MSGTYPE=hide "You (climb|fly) (up|down) .*"
+
+## Use status hilites
+#
+OPTIONS=statushilites
+# HP
+OPTIONS=hitpointbar
+OPTIONS=hilite_status:hitpoints/100%/grey&normal
+OPTIONS=hilite_status:hitpoints/<100%/green&normal
+OPTIONS=hilite_status:hitpoints/<66%/yellow&normal
+OPTIONS=hilite_status:hitpoints/<50%/orange&normal
+OPTIONS=hilite_status:hitpoints/<33%/red&bold
+OPTIONS=hilite_status:hitpoints/<15%/red&inverse
+## Pw
+OPTIONS=hilite_status:power/100%/grey&normal
+OPTIONS=hilite_status:power/<100%/green&normal
+OPTIONS=hilite_status:power/<66%/yellow&normal
+OPTIONS=hilite_status:power/<50%/orange&normal
+OPTIONS=hilite_status:power/<33%/red&bold
+## Carry
+OPTIONS=hilite_status:cap/burdened/yellow/stressed/orange/strained/red&bold/overtaxed/red&inverse/overloaded/red&inverse&blink
+## Hunger
+OPTIONS=hilite_status:hunger/satiated/yellow/hungry/orange/weak/red&bold/fainting/red&inverse/fainted/red&inverse&blink
+## Mental
+OPTIONS=hilite_status:condition/hallu/yellow
+OPTIONS=hilite_status:condition/conf/orange
+OPTIONS=hilite_status:condition/stun/red&bold
+## Health
+OPTIONS=hilite_status:condition/termill/red&inverse
+OPTIONS=hilite_status:condition/foodpois/red&inverse
+OPTIONS=hilite_status:condition/slime/red&inverse
+# Str, Con, Dex, Int, Wis, Cha
+OPTIONS=hilite_status:characteristics/up/green/down/red
+# gold
+OPTIONS=hilite_status: gold/up/yellow/down/brown
