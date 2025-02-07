@@ -368,6 +368,16 @@ UUID=... /media/SSD ext4 defaults 0 0
 ...
 ```
 
+### Bat instead of cat
+
+- Run `sudo apt install bat`
+- Fish shell add
+
+   ```bash
+   alias cat='batcat -pp'
+   alias bat='batcat'
+   ```
+
 ### Fortune and insult mode
 
 - Edit `sudo visudo` to add `Defaults insults`
