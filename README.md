@@ -147,7 +147,7 @@ $ ssh nickname
   ----------------------------
   sec   rsa3072/032515EA599EED90 2024-04-21 [SC]
           DC2F35213D386833573A08E7032515EA599EED90
-  uid                 [ultimate] HuaTsai <huatsai.eed07g@nctu.edu.tw>
+  uid                 [ultimate] HuaTsai <huatsai42@gmail.com>
   ssb   rsa3072/C5ABE49697032BD9 2024-04-21 [E]
   $ gpg --armor --export 032515EA599EED90
   # Copy the GPG key, beginning with `-----BEGIN PGP PUBLIC KEY BLOCK-----` and ending with `-----END PGP PUBLIC KEY BLOCK-----` to github settings
@@ -185,13 +185,12 @@ sudo apt install nodejs
 
 ### Neovim
 
-Provide v0.10.0 nvim.appimage from [nvim release page](https://github.com/neovim/neovim/releases/).
+Provide v0.10.4 nvim.appimage (renamed to vim) from [nvim release page](https://github.com/neovim/neovim/releases/).
 
 ```bash
-sudo apt install ripgrep g++-13
-sudo ln -s ~/nvim.appimage /usr/bin/vim
-git clone git@github.com:HuaTsai/NvChad.git ~/.config/nvim
-vim  # automatically MasonInstallAll
+sudo mv vim /usr/bin/vim
+git clone git@github.com:HuaTsai/nvim.git ~/.config/nvim
+vim
 ```
 
 ### Jump Command: `z`
