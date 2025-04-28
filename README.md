@@ -164,6 +164,15 @@ $ ssh nickname
   git config --global alias.diffall git-diffall
   ```
 
+- Aliases
+
+  ```bash
+  cat > ~/.config/fish/config.fish <<EOF
+  alias gst='git status -sb'
+  alias glo='git log --oneline --graph --decorate --all'
+  EOF
+  ```
+
 ### Fish Shell
 
 ```bash
@@ -321,21 +330,23 @@ To install dependencies, run `rosdep install --from-paths src --ignore-src -r` i
   - Bash
 
     ```bash
-    echo "source /opt/ros/<distro>/setup.bash" >> ~/.bashrc
-    echo "alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'" >> ~/.bashrc
-    echo "alias crm='rm -rf build install log'" >> ~/.bashrc
+    cat > ~/.bashrc <<EOF
+    source /opt/ros/<distro>/setup.bash
+    alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+    alias crm='rm -rf build install log'
+    EOF
     ```
 
   - Fish
 
     ```bash
     fisher install edc/bass
-    echo "set -gx VISUAL vim" >> ~/.config/fish/config.fish
-    echo "set -gx EDITOR vim" >> ~/.config/fish/config.fish
-    echo "bass source /opt/ros/<distro>/setup.bash" >> ~/.config/fish/config.fish
-    echo "alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'" >> ~/.config/fish/config.fish
-    echo "alias crm='rm -rf build install log'" >> ~/.config/fish/config.fish
-    echo "alias sis='source install/setup.bash'" >> ~/.config/fish/config.fish
+    cat > ~/.config/fish/config.fish <<EOF
+    bass source /opt/ros/<distro>/setup.bash
+    alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+    alias crm='rm -rf build install log'
+    alias sis='source install/setup.bash'
+    EOF
     ```
 
 - Some important packages
@@ -370,12 +381,14 @@ UUID=... /media/SSD ext4 defaults 0 0
 ### Bat instead of cat
 
 - Run `sudo apt install bat`
-- Fish shell add
+- Fish shell add aliases
 
-   ```bash
-   alias cat='batcat -pp'
-   alias bat='batcat'
-   ```
+  ```bash
+  cat > ~/.config/fish/config.fish <<EOF
+  alias cat='batcat -pp'
+  alias bat='batcat'
+  EOF
+  ```
 
 ### Fortune and insult mode
 
