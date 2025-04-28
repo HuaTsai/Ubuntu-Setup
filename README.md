@@ -167,10 +167,8 @@ $ ssh nickname
 - Aliases
 
   ```bash
-  cat > ~/.config/fish/config.fish <<EOF
   alias gst='git status -sb'
   alias glo='git log --oneline --graph --decorate --all'
-  EOF
   ```
 
 ### Fish Shell
@@ -327,26 +325,21 @@ To install dependencies, run `rosdep install --from-paths src --ignore-src -r` i
 
 - Environment
 
-  - Bash
+  - Bash config in `~/.bashrc`
 
     ```bash
-    cat > ~/.bashrc <<EOF
     source /opt/ros/<distro>/setup.bash
     alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
     alias crm='rm -rf build install log'
-    EOF
     ```
 
-  - Fish
+  - Fish config in `~/.config/fish/config.fish` (need `fisher install edc/bass`)
 
     ```bash
-    fisher install edc/bass
-    cat > ~/.config/fish/config.fish <<EOF
     bass source /opt/ros/<distro>/setup.bash
     alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
     alias crm='rm -rf build install log'
     alias sis='source install/setup.bash'
-    EOF
     ```
 
 - Some important packages
@@ -384,10 +377,8 @@ UUID=... /media/SSD ext4 defaults 0 0
 - Fish shell add aliases
 
   ```bash
-  cat > ~/.config/fish/config.fish <<EOF
   alias cat='batcat -pp'
   alias bat='batcat'
-  EOF
   ```
 
 ### Fortune and insult mode
