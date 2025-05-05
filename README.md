@@ -385,9 +385,9 @@ UUID=... /media/SSD ext4 defaults 0 0
 
 - Fish shell add
 
-  ```bash
+  ```cpp
   function grn
-      grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv
+      grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv .
   end
   ```
 
