@@ -381,6 +381,16 @@ UUID=... /media/SSD ext4 defaults 0 0
   alias bat='batcat'
   ```
 
+### Command grep alias
+
+- Fish shell add
+
+  ```bash
+  function grn
+      grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv
+  end
+  ```
+
 ### Fortune and insult mode
 
 - Edit `sudo visudo` to add `Defaults insults`
