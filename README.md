@@ -371,21 +371,40 @@ conda config --set auto_activate_base false
   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
   ```
 
-### ROS2
+### [ROS2](https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debs.html)
+
+| Distro              | EOL date  | Tier 1 Platform      |
+| ------------------- | --------- | -------------------- |
+| Rolling             | N/A       | N/A                  |
+| Kilted Kaiju        | Dec. 2026 | Ubuntu 24.04 (Noble) |
+| Jazzy Jalisco       | May 2029  | Ubuntu 24.04 (Noble) |
+| Iron Irwini         | Dec. 2024 | Ubuntu 22.04 (Jammy) |
+| Humble Hawksbill    | May 2027  | Ubuntu 22.04 (Jammy) |
+| Galactic Geochelone | Dec. 2022 | Ubuntu 20.04 (Focal) |
+| Foxy Fitzroy        | Jun. 2023 | Ubuntu 20.04 (Focal) |
 
 ```bash
 sudo add-apt-repository universe
 sudo curl -fsSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-set UBUNTU_CODENAME (grep UBUNTU_CODENAME /etc/os-release | string split "=" | tail -n1 | string trim)
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+set ROS_APT_SOURCE_VERSION (curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+set VERSION_CODENAME (grep VERSION_CODENAME /etc/os-release | string split "=" | tail -n1 | string trim)  # or rolling
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/"$ROS_APT_SOURCE_VERSION"/ros2-apt-source_"$ROS_APT_SOURCE_VERSION"."$VERSION_CODENAME"_all.deb"
+sudo apt install /tmp/ros2-apt-source.deb
 sudo apt update && sudo apt upgrade
 sudo apt install ros-<distro>-desktop ros-dev-tools  # or rolling
 sudo rosdep init
 rosdep update
 ```
 
-To install dependencies, run `rosdep install --from-paths src --ignore-src -r` in ros2 worksapce.
-
+- Important packages
+  - `ros-<distro>-image-transport-plugins`
+  - `ros-<distro>-vision-msgs`
+  - `ros-<distro>-vision-msgs-rviz-plugins`
+  - `ros-<distro>-pcl-conversions`
+- Uninstall
+  - `sudo apt purge '~nros-rolling*' && sudo apt autoremove`
+- Install dependencies from ros2 workspace
+  - `rosdep install --from-paths src --ignore-src -r`
 - Shell config
 
   ```bash
@@ -395,9 +414,6 @@ To install dependencies, run `rosdep install --from-paths src --ignore-src -r` i
   alias crm='rm -rf build install log'
   alias sis='source install/setup.bash'
   ```
-
-- Important packages
-  - `ros-<distro>-image-transport-plugins` (or rolling)
 
 ### Fortune and insult mode
 
