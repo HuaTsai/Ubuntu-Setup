@@ -1,5 +1,11 @@
 from pathlib import Path
 
+class Color:
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    ENDC = "\033[0m"
+
 def main():
     """Remove nonexistent paths from @data file"""
     data_file = Path("~/.local/share/z/data").expanduser()
@@ -26,18 +32,18 @@ def main():
             
             if path.exists():
                 existing_lines.append(original_line)
-                print(f"Keep line {line_num}: {path_info}")
+                print(f"{Color.GREEN}Keep line {line_num}: {path_info}{Color.ENDC}")
             else:
                 removed_count += 1
-                print(f"Remove line {line_num}: {path_info}")
+                print(f"{Color.RED}Remove line {line_num}: {path_info}{Color.ENDC}")
     
     # Write back to file
     with data_file.open('w', encoding='utf-8') as f:
         f.writelines(existing_lines)
     
-    print("\nCleanup completed:")
+    print(f"\n{Color.YELLOW}Cleanup completed:")
     print(f"Removed {removed_count} nonexistent paths")
-    print(f"Kept {len(existing_lines)} entries")
+    print(f"Kept {len(existing_lines)} entries{Color.ENDC}")
 
 if __name__ == "__main__":
     main()
