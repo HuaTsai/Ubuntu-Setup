@@ -414,6 +414,14 @@ rosdep update
   alias sis='source install/setup.bash'
   ```
 
+### Sound Loopback
+
+```bash
+sudo apt install pavucontrol
+pactl load-module module-loopback latency_msec=1
+pavucontrol # at recording tab, select "Monitor of <output device>"
+```
+
 ### Fortune and insult mode
 
 - Edit `sudo visudo` to add `Defaults insults`
