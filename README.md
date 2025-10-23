@@ -239,6 +239,8 @@ $ ssh nickname  # connect to remote machine
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt install nodejs
+sudo npm config -g set prefix $HOME/.npm-global
+# Fish shell config: set -gx PATH ~/.npm-global/bin $PATH
 ```
 
 ### Neovim
@@ -305,16 +307,6 @@ docker run hello-world
   uv pip install <package>
   ```
 
-### Anaconda (Not suggested in future usage)
-
-- Download and install [Anaconda](https://www.anaconda.com/download)
-- Install to location `~/anaconda3`
-
-```bash
-~/anaconda3/bin/conda init fish
-conda config --set auto_activate_base false
-```
-
 ### AI Toolkits
 
 - Install Nvidia driver
@@ -340,7 +332,7 @@ conda config --set auto_activate_base false
   - Use `apt show` to check package and its dependencies before installation
 
   ```bash
-  sudo apt instal nvtop
+  sudo apt install nvtop
   sudo apt install cuda-toolkit-12.8  # 12.8.1-1
   sudo apt install cudnn              # 9.10.1.4-1
   sudo apt install tensorrt           # 10.11.0.33-1
