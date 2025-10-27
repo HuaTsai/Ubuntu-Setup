@@ -409,9 +409,7 @@ rosdep update
 ### Sound Loopback
 
 ```bash
-sudo apt install pavucontrol
-pactl load-module module-loopback latency_msec=1
-pavucontrol # at recording tab, select "Monitor of <output device>"
+sudo apt install pipewire helvum
 ```
 
 ### Fortune and insult mode
