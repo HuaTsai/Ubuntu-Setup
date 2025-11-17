@@ -49,11 +49,6 @@ The organized transcript should follow this structure:
 
 - Takeaway 1
 - Takeaway 2
-
-## Action Items
-
-- [ ] Action item 1
-- [ ] Action item 2
 ```
 
 ## Best Practices
