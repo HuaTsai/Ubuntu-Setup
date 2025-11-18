@@ -441,6 +441,27 @@ end
 sudo apt install variety
 ```
 
+### Obsidian
+
+- Download appimage, rename `obsidian` and move to `/usr/bin/obsidian`
+- Create desktop entry `~/.local/share/applications/obsidian.desktop`
+
+  ```ini
+  [Desktop Entry]
+  Name=Obsidian
+  Comment=Knowledge base and note-taking application
+  Exec=/usr/bin/obsidian --no-sandbox %u
+  Terminal=false
+  Type=Application
+  Icon=obsidian
+  Categories=Office;TextEditor;
+  MimeType=x-scheme-handler/obsidian;
+  StartupWMClass=obsidian
+  ```
+
+- Donwload [icon](https://obsidian.md/blog/new-obsidian-icon/) named `obsidian.png` and move to `~/.local/share/icons/obsidian.png`
+- Run `update-desktop-database ~/.local/share/applications/`
+
 ### Other Apps
 
 - 1password
