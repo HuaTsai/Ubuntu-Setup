@@ -3,12 +3,13 @@ if status is-interactive
 end
 
 set -gx fish_greeting
-set -gx PATH /usr/src/tensorrt/bin /usr/local/cuda/bin $PATH
+set -gx PATH ~/.npm-global/bin /usr/src/tensorrt/bin /usr/local/cuda/bin $PATH
+set -gx ROS_LOCALHOST_ONLY 1
 
 bass source /opt/ros/rolling/setup.bash
 alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 alias crm='rm -rf build install log'
-alias sis='source install/setup.bash'
+alias sis='bass source install/setup.bash'
 alias gst='git status -sb'
 alias glo='git log --oneline --graph --decorate --all'
 alias cat='batcat -pp'
@@ -16,6 +17,15 @@ alias bat='batcat'
 
 function grn
     grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv .
+end
+
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
 end
 
 function fish_command_not_found
@@ -73,3 +83,4 @@ function fish_command_not_found
     set RAND (math 1 + (random) % (count $RESPONSES))
     echo $RESPONSES[$RAND] | cowsay -f dragon | lolcat
 end
+
