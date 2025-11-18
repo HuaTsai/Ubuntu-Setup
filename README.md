@@ -245,7 +245,7 @@ sudo npm config -g set prefix $HOME/.npm-global
 
 ### Neovim
 
-Provide v0.10.4 nvim.appimage (renamed to vim) from [nvim release page](https://github.com/neovim/neovim/releases/).
+Provide v0.11.5 nvim.appimage (renamed to vim) from [nvim release page](https://github.com/neovim/neovim/releases/).
 
 ```bash
 sudo cp vim /usr/bin/vim
@@ -263,7 +263,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker $USER
-# Logout and then login
+# Reboot
 docker run hello-world
 ```
 
@@ -309,12 +309,6 @@ docker run hello-world
 
 ### AI Toolkits
 
-- Install Nvidia driver
-  - Find candidates: `apt search --names-only 'nvidia-driver-[0-9]+$'`
-  - Run `sudo apt install nvidia-driver-570`
-    - Use ubuntu provided driver
-    - Set password and then reboot
-    - If MOK enrollment is missed, run `sudo secureboot-policy --enroll-key` to type password again
 - Install keyring
 
   ```bash
@@ -333,10 +327,13 @@ docker run hello-world
 
   ```bash
   sudo apt install nvtop
-  sudo apt install cuda-toolkit-12.8  # 12.8.1-1
-  sudo apt install cudnn              # 9.10.1.4-1
-  sudo apt install tensorrt           # 10.11.0.33-1
+  sudo apt install cuda      # nvidia-driver-580-open & cuda 13.0.2-1
+  sudo apt install cudnn     # 9.16.0.29-1
+  sudo apt install tensorrt  # 10.11.0.33-1
   ```
+
+  - If MOK enrollment shows, set password and then reboot
+    - If missed, run `sudo secureboot-policy --enroll-key` to type password again
 
 - Environment
 
@@ -357,11 +354,7 @@ docker run hello-world
 
 ### Pytorch
 
-- Follow guide in official [website](https://pytorch.org/get-started/locally/)
-
-  ```bash
-  pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
-  ```
+- Follow guide in official [website](https://pytorch.org/get-started/locally/), using `uv add torch` is suggested
 
 ### [ROS2](https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debs.html)
 
@@ -403,7 +396,7 @@ rosdep update
   bass source /opt/ros/<distro>/setup.bash
   alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   alias crm='rm -rf build install log'
-  alias sis='source install/setup.bash'
+  alias sis='bass source install/setup.bash'
   ```
 
 ### Sound Loopback
@@ -417,6 +410,43 @@ sudo apt install pavucontrol
 pactl load-module module-loopback latency_msec=1
 pavucontrol  # at recording tab, select "Monitor of <output device>"
 ```
+
+### Yazi
+
+Follow the [official guide](https://yazi-rs.github.io/docs/installation/)
+
+```bash
+sudo apt install ffmpeg 7zip jq poppler-utils fd-find ripgrep fzf zoxide imagemagick
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup update
+cargo install --force yazi-build
+```
+
+Fish shell wrapper
+
+```bash
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
+end
+```
+
+### Background Service
+
+```bash
+sudo apt install variety
+```
+
+### Other Apps
+
+- 1password
+- astah
+- discord
+- surfshark
 
 ### Fortune and insult mode
 
