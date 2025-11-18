@@ -447,6 +447,7 @@ sudo apt install variety
 - astah
 - discord
 - surfshark
+- obsidian
 
 ### Fortune and insult mode
 
