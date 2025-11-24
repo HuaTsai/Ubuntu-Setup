@@ -463,6 +463,19 @@ sudo apt install variety
 - Donwload [icon](https://obsidian.md/blog/new-obsidian-icon/) named `obsidian.png` and move to `~/.local/share/icons/obsidian.png`
 - Run `update-desktop-database ~/.local/share/applications/`
 
+### Ruby
+
+```bash
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+~/.rbenv/bin/rbenv init
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+rbenv install -l         # list available versions
+rbenv install <version>  # install specific version
+rbenv global <version>   # set the default Ruby version for this machine
+rbenv local <version>    # set the Ruby version for this directory
+gem install bundler
+```
+
 ### Other Apps
 
 - 1password
