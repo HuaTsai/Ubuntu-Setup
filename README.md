@@ -232,6 +232,7 @@ $ ssh nickname  # connect to remote machine
   ```bash
   alias gst='git status -sb'
   alias glo='git log --oneline --graph --decorate --all'
+  alias gpr='git pull --rebase'
   ```
 
 ### Node.js from nodesource
