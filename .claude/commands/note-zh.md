@@ -20,7 +20,19 @@ description: 將英文技術文檔整理成繁體中文精簡列點格式
 ### 語言與標點
 
 - 使用繁體中文
-- 使用中文標點符號（、，：；（）等），但程式碼內保持原樣
+- 筆記整理全程使用**中文標點符號**，只有程式碼內保持使用英文標點符號
+
+  - **請嚴格遵守此規則**以確保文件一致性，參考下表：
+
+    | 中文標點 | 中文碼位 | 英文標點 | 英文碼位 |
+    | -------- | -------- | -------- | -------- |
+    | （       | 0xFF08   | (        | 0x0028   |
+    | ）       | 0xFF09   | )        | 0x0029   |
+    | ，       | 0xFF0C   | ,        | 0x002C   |
+    | 。       | 0x3002   | .        | 0x002E   |
+    | ：       | 0xFF1A   | :        | 0x003A   |
+    | ；       | 0xFF1B   | ;        | 0x003B   |
+
 - 技術術語附上英文原文，格式：中文（English）
 
 ### 格式要求
@@ -45,13 +57,13 @@ description: 將英文技術文檔整理成繁體中文精簡列點格式
 **指令格式：**
 
 ```bash
-/summarize-zh-tw 檔案路徑 章節名稱 待整理的英文內容
+/note-zh 檔案路徑 章節名稱 待整理的英文內容
 ```
 
 **實際範例：**
 
 ```bash
-/summarize-zh-tw Coroutines.md "The Framework" Coroutines are stackless. A stackless coroutine is able to suspend and resume the top-level coroutine. Stackless coroutines are often called resumable functions.
+/note-zh Coroutines.md "The Framework" Coroutines are stackless. A stackless coroutine is able to suspend and resume the top-level coroutine. Stackless coroutines are often called resumable functions.
 ```
 
 執行後會：
