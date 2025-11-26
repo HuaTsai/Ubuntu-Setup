@@ -333,6 +333,17 @@ docker run hello-world
   sudo apt install tensorrt  # 10.11.0.33-1
   ```
 
+  - If `nvidia-smi` does not work due to secure boot, enroll MOK key
+
+    ```bash
+    # Installing driver...
+    Public certificate (MOK): /var/lib/shim-signed/mok/MOK.der
+    # End of installing...
+
+    sudo mkutil --import /var/lib/shim-signed/mok/MOK.der
+    # Type password for MOK enrollment
+    ```
+
   - If MOK enrollment shows, set password and then reboot
     - If missed, run `sudo secureboot-policy --enroll-key` to type password again
 
