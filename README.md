@@ -474,6 +474,38 @@ sudo apt install variety
 - Donwload [icon](https://obsidian.md/blog/new-obsidian-icon/) named `obsidian.png` and move to `~/.local/share/icons/obsidian.png`
 - Run `update-desktop-database ~/.local/share/applications/`
 
+### Java Toolkit
+
+```bash
+curl -s "https://get.sdkman.io" | bash
+```
+
+- fish shell config
+
+  ```bash
+  set -gx SDKBINPATHS (find ~/.sdkman/candidates/*/current/bin -maxdepth 0)
+  set -gx PATH $SDKBINPATHS ... $PATH
+  function sdk
+      bass source ~/.sdkman/bin/sdkman-init.sh ';' sdk $argv
+  end
+  ```
+
+- Install Java versions
+
+  ```bash
+  sdk list java                  # list available versions
+  sdk install java 21.0.9-tem    # if not specified, the latest Temurin version will be installed
+  sdk use java 21.0.9-tem        # use the version in current shell
+  sdk default java 21.0.9-tem    # set default version
+  sdk uninstall java 21.0.9-tem  # uninstall the version
+  sdk install maven
+  ```
+
+  Note:
+
+  - Java LTS versions are 8, 11, 17, 21, 25
+  - GraalVM versions are suffixed with `graal`, which supports native image compilation
+
 ### Ruby
 
 ```bash
