@@ -519,6 +519,28 @@ rbenv local <version>    # set the Ruby version for this directory
 gem install bundler
 ```
 
+### Delete Screenshots Older than 30 Days
+
+- File `~/.config/systemd/user/cleanup-screenshots.service`
+
+  ```ini
+  [Unit]
+  Description=Auto delete screenshots older than 30 days
+
+  [Service]
+  Type=oneshot
+  ExecStart=/usr/bin/find %h/Pictures/Screenshots -type f -mtime +30 -delete
+
+  [Install]
+  WantedBy=default.target
+  ```
+
+- Enable service
+
+  ```bash
+  systemctl --user enable --now cleanup-screenshots.service
+  ```
+
 ### Other Apps
 
 - 1password
