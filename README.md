@@ -409,6 +409,7 @@ rosdep update
   alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   alias crm='rm -rf build install log'
   alias sis='bass source install/setup.bash'
+  alias rdi='rosdep install --from-paths src --ignore-src -r -y'
   ```
 
 ### Sound Loopback
