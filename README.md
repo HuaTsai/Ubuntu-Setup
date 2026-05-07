@@ -61,8 +61,16 @@
 
 ```bash
 sudo apt update && sudo apt upgrade
-sudo apt install aptitude btop build-essential curl dos2unix git htop hyperfine libfuse2 locate neofetch net-tools openssh-server python3-pip python3-venv software-properties-common tldr tree
+sudo apt install aptitude btop build-essential curl dos2unix git htop hyperfine libfuse2 locate neofetch openssh-server python3-pip python3-venv ripgrep software-properties-common tldr tree
 ```
+
+- `ripgrep` provides `rg` command, which is an alternative to `grep -rn "xxx" .`
+- `ifconfig` in `net-tools` is deprecated, use `ip` instead. Config in fish shell:
+
+  ```bash
+  alias ipa = 'ip -br -c a'
+  alias ipr = 'ip -c r'
+  ```
 
 ### Fish Shell
 
@@ -110,16 +118,6 @@ echo "set -gx fish_greeting" >> ~/.config/fish/config.fish
   ```bash
   alias cat='batcat -pp'
   alias bat='batcat'
-  ```
-
-### Command grep alias
-
-- Fish shell add
-
-  ```cpp
-  function grn
-      grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv .
-  end
   ```
 
 ### Multiple `g++` Versions
@@ -520,9 +518,11 @@ rbenv local <version>    # set the Ruby version for this directory
 gem install bundler
 ```
 
-### Delete Screenshots Older than 30 Days
+### Systemd Examples
 
-- File `~/.config/systemd/user/cleanup-screenshots.service`
+- Delete Screenshots Older than 30 Days
+
+  File `~/.config/systemd/user/cleanup-screenshots.service`
 
   ```ini
   [Unit]
@@ -536,10 +536,64 @@ gem install bundler
   WantedBy=default.target
   ```
 
+- Auto Clean Old z Paths
+
+  File `~/.config/systemd/user/clean-z-paths.service`
+
+  ```ini
+  [Unit]
+  Description=Auto delete non-existent Z paths
+
+  [Service]
+  Type=oneshot
+  ExecStart=/usr/bin/clean-z-paths
+
+  [Install]
+  WantedBy=default.target
+  ```
+
+- Network Login via Playwright (Need Root)
+
+  File `/etc/systemd/system/network-login.service`
+
+  ```ini
+  [Unit]
+  Description=Auto Network Login
+  After=network-online.target
+
+  [Service]
+  ExecStart=/home/<user>/.local/bin/uv run main.py
+  WorkingDirectory=/abspath/to/directory
+  Restart=always
+  RestartSec=20s
+  Environment=PLAYWRIGHT_BROWSERS_PATH=/home/<user>/.cache/ms-playwright
+
+  [Install]
+  WantedBy=default.target
+  ```
+
+  If
+
 - Enable service
 
   ```bash
-  systemctl --user enable --now cleanup-screenshots.service
+  systemctl daemon-reload  # For edited service, reload is necessary
+  systemctl --user enable --now cleanup-screenshots.service  # Now = enable + start
+  systemctl --user status cleanup-screenshots.service
+  ```
+
+  For system level service, remove `--user` flag. Same rules apply for the following commands.
+
+- See journal
+
+  ```bash
+  journalctl --user -u cleanup-screenshots.service  # See logs of specified [u]nit
+  ```
+
+- Security analysis
+
+  ```bash
+  systemd-analyze --user security cleanup-screenshots.service
   ```
 
 ### Other Apps
