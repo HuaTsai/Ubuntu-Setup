@@ -192,10 +192,16 @@ $ ssh nickname  # connect to remote machine
 
   ```bash
   alias gst='git status -sb'
+  alias gd='git diff'
+  alias gds='git diff --staged'
   alias glo='git log --oneline --graph --decorate --all'
-  alias gps='git push'
-  alias gpl='git pull'
-  alias gplr='git pull --rebase'
+  alias gsw='git switch'
+  alias gswc='git switch -c'
+  alias gp='git push'
+  alias gl='git pull'
+  alias gbd='git branch -d'
+  alias gcm='git commit -m'
+  alias gcam='git commit -am'
   ```
 
 - SSH key
