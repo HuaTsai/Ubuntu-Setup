@@ -181,8 +181,21 @@ $ ssh nickname  # connect to remote machine
 
   ```bash
   git config --global init.defaultBranch main
+  git config --global push.autoSetupRemote true    # Git 2.37+
+  git config --global pull.ff only
+  git config --global rebase.autoStash true
   git config --global user.name "HuaTsai"
   git config --global user.email "huatsai42@gmail.com"
+  ```
+
+- Aliases
+
+  ```bash
+  alias gst='git status -sb'
+  alias glo='git log --oneline --graph --decorate --all'
+  alias gps='git push'
+  alias gpl='git pull'
+  alias gplr='git pull --rebase'
   ```
 
 - SSH key
@@ -223,14 +236,6 @@ $ ssh nickname  # connect to remote machine
   sudo cp git-diffall /usr/bin
   git config --global diff.tool meld
   git config --global alias.diffall git-diffall
-  ```
-
-- Aliases
-
-  ```bash
-  alias gst='git status -sb'
-  alias glo='git log --oneline --graph --decorate --all'
-  alias gpr='git pull --rebase'
   ```
 
 ### Node.js from nodesource
