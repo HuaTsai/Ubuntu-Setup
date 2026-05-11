@@ -68,8 +68,8 @@ sudo apt install aptitude btop build-essential curl dos2unix git htop hyperfine 
 - `ifconfig` in `net-tools` is deprecated, use `ip` instead. Config in fish shell:
 
   ```bash
-  alias ipa = 'ip -br -c a'
-  alias ipr = 'ip -c r'
+  alias ipa='ip -br -c a'
+  alias ipr='ip -c r'
   ```
 
 ### Fish Shell
