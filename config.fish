@@ -2,30 +2,43 @@ if status is-interactive
     fortune | cowsay | lolcat
 end
 
+set -gx EDITOR vim
+set -gx VISUAL vim
 set -gx fish_greeting
-set -gx PATH ~/.npm-global/bin /usr/src/tensorrt/bin /usr/local/cuda/bin $PATH
+set -gx MAKEFLAGS -j 1
 set -gx ROS_LOCALHOST_ONLY 1
+set -gx SDKBINPATH (find ~/.sdkman/candidates/*/current/bin -maxdepth 0)
+set -gx PATH $SDKBINPATH ~/.npm-global/bin ~/.local/bin /usr/local/cuda/bin /usr/src/tensorrt/bin $PATH
 
-bass source /opt/ros/rolling/setup.bash
-alias cb='colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+alias cb='colcon build --executor sequential --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
 alias crm='rm -rf build install log'
 alias sis='bass source install/setup.bash'
-alias gst='git status -sb'
-alias glo='git log --oneline --graph --decorate --all'
 alias cat='batcat -pp'
 alias bat='batcat'
+alias rdi='rosdep install --from-paths src --ignore-src -r -y'
+alias ipa='ip -br -c a'
+alias ipr='ip -c r'
+alias c='claude'
 
-function grn
-    grep -rn --color=auto --exclude-dir={.git,node_modules,__pycache__} $argv .
+# Git aliases
+alias gst='git status -sb'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias glo='git log --oneline --graph --decorate --all'
+alias gsw='git switch'
+alias gswc='git switch -c'
+alias gp='git push'
+alias gl='git pull'
+alias gbd='git branch -d'
+alias gcm='git commit -m'
+alias gcam='git commit -am'
+
+function sdk
+    bass source "$HOME/.sdkman/bin/sdkman-init.sh" ';' sdk $argv
 end
 
-function y
-    set tmp (mktemp -t "yazi-cwd.XXXXXX")
-    yazi $argv --cwd-file="$tmp"
-    if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-        builtin cd -- "$cwd"
-    end
-    rm -f -- "$tmp"
+function cbp
+    colcon build --packages-select $argv[1] --cmake-force-configure --cmake-clean-first
 end
 
 function fish_command_not_found
@@ -84,3 +97,15 @@ function fish_command_not_found
     echo $RESPONSES[$RAND] | cowsay -f dragon | lolcat
 end
 
+function y
+	set tmp (mktemp -t "yazi-cwd.XXXXXX")
+	yazi $argv --cwd-file="$tmp"
+	if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+		builtin cd -- "$cwd"
+	end
+	rm -f -- "$tmp"
+end
+
+status --is-interactive; and ~/.rbenv/bin/rbenv init - --no-rehash fish | source
+
+zoxide init fish | source
