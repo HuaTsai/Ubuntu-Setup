@@ -72,6 +72,14 @@ sudo apt install aptitude btop build-essential curl dos2unix git htop hyperfine 
   alias ipr='ip -c r'
   ```
 
+### Zoxide
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+```
+
+Put `zoxide init fish | source` in your `~/.config/fish/config.fish` file.
+
 ### Fish Shell
 
 ```bash
@@ -81,7 +89,6 @@ sudo apt install fish
 chsh -s $(which fish)
 # Logout and then login
 curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
-fisher install jethrokuan/z  # jump command z
 fisher install edc/bass      # support source command
 echo "set -gx fish_greeting" >> ~/.config/fish/config.fish
 ```
@@ -542,22 +549,6 @@ gem install bundler
   [Service]
   Type=oneshot
   ExecStart=/usr/bin/find %h/Pictures/Screenshots -type f -mtime +30 -delete
-
-  [Install]
-  WantedBy=default.target
-  ```
-
-- Auto Clean Old z Paths
-
-  File `~/.config/systemd/user/clean-z-paths.service`
-
-  ```ini
-  [Unit]
-  Description=Auto delete non-existent Z paths
-
-  [Service]
-  Type=oneshot
-  ExecStart=/usr/bin/clean-z-paths
 
   [Install]
   WantedBy=default.target
