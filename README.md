@@ -251,6 +251,13 @@ $ ssh nickname  # connect to remote machine
   git config --global alias.diffall git-diffall
   ```
 
+- Diff with VSCode
+
+  ```bash
+  git config --global diff.tool vscode
+  git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
+  ```
+
 ### Node.js from nodesource
 
 ```bash
